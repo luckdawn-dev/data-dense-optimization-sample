@@ -5,7 +5,7 @@ import { MemoizedOrderRow } from "./OrderRow";
 
 
 export default function VirtualizationOrderTable() {
-    const { filteredOrders, setFilterInput, isOrdered, setIsOrdered } = useImprovedOrder();
+    const { filteredOrders, setFilterInput, isOrdered, setIsOrdered, isFetching } = useImprovedOrder();
     const scrollRef = useRef<HTMLDivElement>(null);
 
     const rowVirtualizer = useVirtualizer({
@@ -69,7 +69,13 @@ export default function VirtualizationOrderTable() {
                         </thead>
 
                         <tbody style={{ height: rowVirtualizer.getTotalSize() }}>
-                            {virtualRows.map((virtualRow) => {
+                            {isFetching ? (
+                                <tr className="loading-row">
+                                    <td colSpan={17}>
+                                        <div className="loading-cell"><div className="spinner" /></div>
+                                    </td>
+                                </tr>
+                            ) : virtualRows.map((virtualRow) => {
                                 const order = filteredOrders[virtualRow.index]
 
                                 return (

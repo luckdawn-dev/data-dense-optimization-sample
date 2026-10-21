@@ -317,6 +317,7 @@ body {
 .data-table.is-virtualized tbody {
   display: grid;
   position: relative;
+  min-height: 240px; /* loading: the inline height is 0 until data arrives */
 }
 
 .data-table.is-virtualized tbody tr {
@@ -328,6 +329,40 @@ body {
 .data-table.is-virtualized tbody td {
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+/* ============================================================
+   Loading state (body-only spinner)
+   Rotation is transform-based, so the compositor keeps it
+   spinning even while the main thread builds the big table.
+   ============================================================ */
+.loading-cell {
+  height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.data-table .loading-row td {
+  border-bottom: none;
+}
+
+.data-table.is-virtualized .loading-row {
+  position: static; /* loaded rows are absolute — the loader is not */
+  grid-template-columns: 1fr;
+}
+
+.spinner {
+  width: 34px;
+  height: 34px;
+  border: 3px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 
 /* ============================================================

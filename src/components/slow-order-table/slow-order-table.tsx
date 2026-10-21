@@ -3,7 +3,7 @@ import { badgeTone } from "../../shared/utils/order-badge";
 
 
 export default function SlowOrderTable() {
-    const { filteredOrders, setFilterInput, isOrdered, setIsOrdered } = useOrder();
+    const { filteredOrders, setFilterInput, isOrdered, setIsOrdered, isFetching } = useOrder();
 
     return (
         <main className="page">
@@ -58,7 +58,13 @@ export default function SlowOrderTable() {
                         </thead>
 
                         <tbody>
-                            {filteredOrders.map((order) => (
+                            {isFetching ? (
+                                <tr className="loading-row">
+                                    <td colSpan={17}>
+                                        <div className="loading-cell"><div className="spinner" /></div>
+                                    </td>
+                                </tr>
+                            ) : filteredOrders.map((order) => (
                                 <tr key={order.id}>
                                     <td className="mono">{order.id}</td>
                                     <td className="mono">{order.orderNumber}</td>
