@@ -1,5 +1,6 @@
 import useOrder from "../../shared/hooks/SlowOrderHook";
 import { badgeTone } from "../../shared/utils/order-badge";
+import LoadingRow from "../../shared/components/LoadingRow";
 
 
 export default function SlowOrderTable() {
@@ -59,11 +60,7 @@ export default function SlowOrderTable() {
 
                         <tbody>
                             {isFetching ? (
-                                <tr className="loading-row">
-                                    <td colSpan={17}>
-                                        <div className="loading-cell"><div className="spinner" /></div>
-                                    </td>
-                                </tr>
+                                <LoadingRow columns={17} />
                             ) : filteredOrders.map((order) => (
                                 <tr key={order.id}>
                                     <td className="mono">{order.id}</td>

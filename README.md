@@ -49,6 +49,8 @@ Data-dense UIs (dashboards, ERPs, admin consoles, web spreadsheets) live off lon
 │   │   ├── slow-order-table/              # ❌ full-mount table
 │   │   └── virtualization-order-table/    # ✅ windowed table
 │   ├── shared/
+│   │   ├── components/LoadingRow.tsx        # shared loading spinner row
+│   │   ├── hooks/OrderFetchHook.ts     # dataset download — owns the loading state
 │   │   ├── hooks/SlowOrderHook.ts     # slow baseline — refilters AND re-sorts on every keystroke
 │   │   ├── hooks/ImprovedOrderHook.ts # deferred filter + sort-once two-stage memoization
 │   │   ├── models/order/order.model.ts    # Order type
