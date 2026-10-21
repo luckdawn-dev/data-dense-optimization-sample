@@ -235,17 +235,13 @@ body {
 }
 
 .data-table {
-  width: 100%;
-  min-width: 1600px;
-  border-collapse: separate;
-  border-spacing: 0;
+  display: grid; /* rows are absolutely positioned — virtualization pattern */
+  width: max-content;
+  min-width: 100%;
   font-size: 13px;
 }
 
 .data-table thead th {
-  position: sticky;
-  top: 0;
-  z-index: 1;
   padding: 10px 12px;
   background: var(--surface-2);
   border-bottom: 1px solid var(--border);
@@ -262,6 +258,8 @@ body {
   padding: 7px 12px;
   border-bottom: 1px solid var(--border-soft);
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   color: var(--text);
 }
 
@@ -281,6 +279,37 @@ body {
 
 .data-table .num {
   font-variant-numeric: tabular-nums;
+}
+
+/* ============================================================
+   Virtualized table layout (semantic tags, grid-ified)
+   Pattern from the TanStack virtualization guide: the tbody
+   reserves the full virtual height and every rendered row is
+   absolutely positioned with translateY.
+   ============================================================ */
+.data-table thead {
+  display: grid;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--surface-2);
+}
+
+.data-table thead tr,
+.data-table tbody tr {
+  display: grid;
+  grid-template-columns: 100px 140px 200px 200px 115px 170px 275px 130px 150px 75px 130px 135px 140px 135px 145px 100px 130px;
+}
+
+.data-table tbody {
+  display: grid;
+  position: relative;
+}
+
+.data-table tbody tr {
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 /* ============================================================

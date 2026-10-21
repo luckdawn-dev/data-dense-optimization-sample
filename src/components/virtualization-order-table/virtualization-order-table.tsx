@@ -1,7 +1,7 @@
-import { badgeTone } from "../../shared/utils/order-badge";
 import { useRef } from "react";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import useImprovedOrder from "../../shared/hooks/ImprovedOrderHook";
+import { MemoizedOrderRow } from "./OrderRow";
 
 
 export default function VirtualizationOrderTable() {
@@ -15,16 +15,6 @@ export default function VirtualizationOrderTable() {
         overscan: 20
     })
     const virtualRows = rowVirtualizer.getVirtualItems();
-
-    const paddingTop = virtualRows[0]?.start ?? 0;
-
-    const paddingBottom = virtualRows.length
-        ? Math.max(
-            0,
-            rowVirtualizer.getTotalSize() -
-            virtualRows[virtualRows.length - 1].end
-        )
-        : 0;
 
     return (
         <main className="page">
@@ -78,56 +68,18 @@ export default function VirtualizationOrderTable() {
                             </tr>
                         </thead>
 
-                        <tbody>
-                            {paddingTop > 0 && (
-                                <tr aria-hidden="true">
-                                    <td
-                                        colSpan={17}
-                                        style={{
-                                            height: paddingTop,
-                                            padding: 0,
-                                            border: 0,
-                                        }}
-                                    />
-                                </tr>
-                            )}
+                        <tbody style={{ height: rowVirtualizer.getTotalSize() }}>
                             {virtualRows.map((virtualRow) => {
                                 const order = filteredOrders[virtualRow.index]
 
                                 return (
-                                    <tr key={order.id}>
-                                        <td className="mono">{order.id}</td>
-                                        <td className="mono">{order.orderNumber}</td>
-                                        <td>{order.createdAt}</td>
-                                        <td>{order.updatedAt}</td>
-                                        <td className="mono">{order.customerId}</td>
-                                        <td>{order.customerName}</td>
-                                        <td className="mono">{order.customerEmail}</td>
-                                        <td>{order.customerSegment}</td>
-                                        <td>{order.customerCity}</td>
-                                        <td>{order.customerState}</td>
-                                        <td>{order.salesChannel}</td>
-                                        <td><span className="badge" data-tone={badgeTone(order.status)}>{order.status}</span></td>
-                                        <td>{order.paymentMethod}</td>
-                                        <td><span className="badge" data-tone={badgeTone(order.paymentStatus)}>{order.paymentStatus}</span></td>
-                                        <td><span className="badge" data-tone={badgeTone(order.fulfillmentStatus)}>{order.fulfillmentStatus}</span></td>
-                                        <td><span className="badge" data-tone={badgeTone(order.priority)}>{order.priority}</span></td>
-                                        <td>{order.warehouse}</td>
-                                    </tr>
+                                    <MemoizedOrderRow
+                                        key={order.id}
+                                        order={order}
+                                        offset={virtualRow.start}
+                                    />
                                 )
                             })}
-                            {paddingBottom > 0 && (
-                                <tr aria-hidden="true">
-                                    <td
-                                        colSpan={17}
-                                        style={{
-                                            height: paddingBottom,
-                                            padding: 0,
-                                            border: 0,
-                                        }}
-                                    />
-                                </tr>
-                            )}
                         </tbody>
 
                     </table>
