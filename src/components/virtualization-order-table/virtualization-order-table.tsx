@@ -45,7 +45,7 @@ export default function VirtualizationOrderTable() {
 
             <section className="table-card">
                 <div ref={scrollRef} className="table-wrap">
-                    <table className="data-table">
+                    <table className="data-table is-virtualized">
                         <thead>
                             <tr>
                                 <th>Id</th>
