@@ -1,4 +1,4 @@
-import useOrder from "../../shared/hooks/OrderHook";
+import useOrder from "../../shared/hooks/SlowOrderHook";
 import { badgeTone } from "../../shared/utils/order-badge";
 
 

@@ -1,12 +1,13 @@
 import { badgeTone } from "../../shared/utils/order-badge";
-import useOrder from "../../shared/hooks/OrderHook";
 import { useRef } from "react";
 import { useVirtualizer } from "@tanstack/react-virtual";
+import useImprovedOrder from "../../shared/hooks/ImprovedOrderHook";
 
 
 export default function VirtualizationOrderTable() {
-    const { filteredOrders, setFilterInput, isOrdered, setIsOrdered } = useOrder();
+    const { filteredOrders, setFilterInput, isOrdered, setIsOrdered } = useImprovedOrder();
     const scrollRef = useRef<HTMLDivElement>(null);
+
     const rowVirtualizer = useVirtualizer({
         count: filteredOrders.length,
         getScrollElement: () => scrollRef.current,
