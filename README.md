@@ -83,27 +83,7 @@ npm run lint
 
 The `orders-20000.json` dataset is served automatically by Vite from `public/`; no extra configuration needed.
 
-## ☁️ Deploy on Vercel
 
-The repo is deploy-ready — `vercel.json` at the root handles the SPA rewrites so routes like `/virtualized` work on deep links instead of 404-ing.
-
-**Via the dashboard (recommended):**
-
-1. Push this repository to GitHub;
-2. On [Vercel](https://vercel.com/new), click **Add New → Project** and pick the repository;
-3. Vercel auto-detects Vite:
-   - **Framework Preset:** Vite
-   - **Build Command:** `npm run build` (default)
-   - **Output Directory:** `dist` (default)
-4. Hit **Deploy** — done, zero environment variables.
-
-**Via the CLI:**
-
-```bash
-npm i -g vercel
-vercel        # first deploy (preview)
-vercel --prod # production deploy
-```
 
 ## 📚 Key takeaways
 
@@ -114,4 +94,4 @@ vercel --prod # production deploy
 
 ---
 
-Built with 💛 and a suspicious amount of table rows.
+Built with a data-dense json.
