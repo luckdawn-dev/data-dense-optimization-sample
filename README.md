@@ -104,6 +104,18 @@ vercel        # first deploy (preview)
 vercel --prod # production deploy
 ```
 
+## 🔧 Roadmap — planned optimizations
+
+These are identified performance improvements, described here as a conversation starter for interviews:
+
+1. **Defer the filter** — today every keystroke re-filters (and re-sorts) 20,000 rows. `useDeferredValue` (or a 200ms debounce) keeps typing instant and lets the table catch up at low priority;
+2. **Sort once, filter on top** — the sort lives inside a `useMemo` that also depends on the filter input, so each keystroke re-sorts everything. Splitting into two memo stages (sort on `[orders, isOrdered]`, filter on top) makes typing O(filter) instead of O(sort);
+3. **Memoize rows** — wrap the `<tr>` in a `React.memo` component: on scroll, unchanged rows skip re-render instead of being reconciled every frame;
+4. **Generate the dataset on-device** — the 20k orders are synthetic, yet the app downloads a 23 MB JSON. Generating it client-side with a seeded PRNG means zero network payload and instant first load;
+5. **`content-visibility: auto`** on `<tr>` lets the browser skip painting off-screen rows — a CSS-only win (deliberately left out so the "Slow" baseline stays honest);
+6. **Fine-tuning** — lower `overscan`, `table-layout: fixed`, and real row measurement (`measureElement`) instead of the magic `estimateSize` constant;
+7. **The real-world answer** — queries like this should be paginated server-side (`GET /orders?page&p&q` with an indexed database). Shipping 20k rows to the client is the wrong architecture; this demo intentionally embraces it to show how far the client can be pushed.
+
 ## 📚 Key takeaways
 
 1. **The DOM is expensive** — performance isn't about how much data *you* process, but how much the *browser* has to paint;
