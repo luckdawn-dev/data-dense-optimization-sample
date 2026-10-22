@@ -7,6 +7,8 @@ A hands-on lab comparing **two ways of rendering the exact same table of 20,000 
 
 The goal is to **feel** the difference, not just read about it: open the *Slow* tab, type into the filter, and watch it stutter. Do the same on the *Virtualized* tab — the identical operation responds instantly.
 
+The site **opens on the Virtualized table by default** — first-time visitors land on the smooth version. The *Slow* page shows a warning banner up front: it mounts all 20,000 rows into the DOM at once, so the screen freezes for a few seconds (that's the point of the demo). While data loads, a spinner overlay is centered over the table card, so it stays visible on mobile even though the table scrolls horizontally. The same overlay appears when clicking **Order by Customer Name**: the hook paints it first, waits one confirmed frame, then runs the blocking sort — so the freeze has a visible explanation instead of a dead page.
+
 > 💡 Tip: open Performance Monitor in DevTools (Chrome/Edge → `Ctrl+Shift+P` → "Performance Monitor") to watch CPU and memory per tab.
 
 > 🔗 **Live demo:** update this line with your Vercel URL after the first deploy — recruiters love a one-click demo.
@@ -49,7 +51,7 @@ Data-dense UIs (dashboards, ERPs, admin consoles, web spreadsheets) live off lon
 │   │   ├── slow-order-table/              # ❌ full-mount table
 │   │   └── virtualization-order-table/    # ✅ windowed table
 │   ├── shared/
-│   │   ├── components/LoadingRow.tsx        # shared loading spinner row
+│   │   ├── components/TableLoadingOverlay.tsx  # shared loading overlay over the table card
 │   │   ├── hooks/OrderFetchHook.ts     # dataset download — owns the loading state
 │   │   ├── hooks/SlowOrderHook.ts     # slow baseline — refilters AND re-sorts on every keystroke
 │   │   ├── hooks/ImprovedOrderHook.ts # deferred filter + sort-once two-stage memoization

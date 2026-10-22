@@ -201,9 +201,45 @@ body {
 }
 
 /* ============================================================
+   Freeze warning (slow page)
+   Amber tone matches the "yellow" badge — reads as "caution".
+   ============================================================ */
+.freeze-warning {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 14px;
+  padding: 10px 14px;
+  border: 1px solid rgba(251, 191, 36, 0.28);
+  border-radius: var(--radius-sm);
+  background: rgba(251, 191, 36, 0.07);
+}
+
+.freeze-warning__icon {
+  color: #fbbf24;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.freeze-warning p {
+  margin: 0;
+  font-size: 13px;
+}
+
+.freeze-warning strong {
+  color: #fbbf24;
+  font-weight: 650;
+}
+
+.freeze-warning a {
+  color: var(--accent-hover);
+}
+
+/* ============================================================
    Table (generic — use it in every table in the project)
    ============================================================ */
 .table-card {
+  position: relative;
   border: 1px solid var(--border);
   border-radius: var(--radius);
   background: var(--surface);
@@ -212,6 +248,7 @@ body {
 
 .table-wrap {
   max-height: calc(100vh - 235px);
+  min-height: 240px; /* loading (or an empty filter result) would otherwise collapse the card to a header-only sliver */
   overflow: auto;
 }
 
@@ -317,7 +354,6 @@ body {
 .data-table.is-virtualized tbody {
   display: grid;
   position: relative;
-  min-height: 240px; /* loading: the inline height is 0 until data arrives */
 }
 
 .data-table.is-virtualized tbody tr {
@@ -332,24 +368,38 @@ body {
 }
 
 /* ============================================================
-   Loading state (body-only spinner)
-   Rotation is transform-based, so the compositor keeps it
-   spinning even while the main thread builds the big table.
+   Loading state (card overlay)
+   Centered over the .table-card — not inside the table — so
+   horizontal table scrolling never pushes it off-screen
+   (it stays visible on mobile). Rotation is transform-based,
+   so the compositor keeps it spinning even while the main
+   thread builds the big table.
    ============================================================ */
-.loading-cell {
-  height: 220px;
+.table-loading-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 3; /* above the sticky thead (z-index: 2) */
+  display: grid;
+  place-items: center;
+  background: rgba(11, 14, 20, 0.55);
+}
+
+.table-loading-overlay__box {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  gap: 12px;
+  padding: 20px 28px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
 }
 
-.data-table .loading-row td {
-  border-bottom: none;
-}
-
-.data-table.is-virtualized .loading-row {
-  position: static; /* loaded rows are absolute — the loader is not */
-  grid-template-columns: 1fr;
+.table-loading-overlay__label {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
 }
 
 .spinner {

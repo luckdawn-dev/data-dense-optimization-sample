@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import useImprovedOrder from "../../shared/hooks/ImprovedOrderHook";
 import { MemoizedOrderRow } from "./OrderRow";
-import LoadingRow from "../../shared/components/LoadingRow";
+import TableLoadingOverlay from "../../shared/components/TableLoadingOverlay";
 
 
 export default function VirtualizationOrderTable() {
@@ -45,6 +45,7 @@ export default function VirtualizationOrderTable() {
             </form>
 
             <section className="table-card">
+                <TableLoadingOverlay show={isFetching} />
                 <div ref={scrollRef} className="table-wrap">
                     <table className="data-table is-virtualized">
                         <thead>
@@ -70,9 +71,7 @@ export default function VirtualizationOrderTable() {
                         </thead>
 
                         <tbody style={{ height: rowVirtualizer.getTotalSize() }}>
-                            {isFetching ? (
-                                <LoadingRow columns={17} />
-                            ) : virtualRows.map((virtualRow) => {
+                            {virtualRows.map((virtualRow) => {
                                 const order = filteredOrders[virtualRow.index]
 
                                 return (

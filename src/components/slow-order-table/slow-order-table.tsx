@@ -1,10 +1,11 @@
+import { Link } from "react-router-dom";
 import useOrder from "../../shared/hooks/SlowOrderHook";
 import { badgeTone } from "../../shared/utils/order-badge";
-import LoadingRow from "../../shared/components/LoadingRow";
+import TableLoadingOverlay from "../../shared/components/TableLoadingOverlay";
 
 
 export default function SlowOrderTable() {
-    const { filteredOrders, setFilterInput, isOrdered, setIsOrdered, isFetching } = useOrder();
+    const { filteredOrders, setFilterInput, isOrdered, toggleIsOrdered, isSorting, isFetching } = useOrder();
 
     return (
         <main className="page">
@@ -12,6 +13,17 @@ export default function SlowOrderTable() {
                 <h1>Slow table</h1>
                 <p>Renders all rows directly — filter and sort computed in memory.</p>
             </header>
+
+            <aside className="freeze-warning" role="note">
+                <span className="freeze-warning__icon" aria-hidden="true">⚠</span>
+                <p>
+                    <strong>Heads up:</strong> this page mounts all 20,000 orders into the DOM
+                    at once, so the screen will freeze for a few seconds while loading.
+                    That is the point of the demo — compare it with the{" "}
+                    <Link to="/virtualized">virtualized table</Link>, which only renders the
+                    visible rows.
+                </p>
+            </aside>
 
             <form className="toolbar">
                 <input
@@ -24,7 +36,7 @@ export default function SlowOrderTable() {
                     type="button"
                     className="btn"
                     aria-pressed={isOrdered}
-                    onClick={() => setIsOrdered((isOrd) => !isOrd)}
+                    onClick={toggleIsOrdered}
                 >
                     Order by Customer Name
                 </button>
@@ -34,6 +46,10 @@ export default function SlowOrderTable() {
             </form>
 
             <section className="table-card">
+                <TableLoadingOverlay
+                    show={isFetching || isSorting}
+                    label={isSorting ? "Sorting 20,000 orders…" : undefined}
+                />
                 <div className="table-wrap">
                     <table className="data-table">
                         <thead>
@@ -59,9 +75,7 @@ export default function SlowOrderTable() {
                         </thead>
 
                         <tbody>
-                            {isFetching ? (
-                                <LoadingRow columns={17} />
-                            ) : filteredOrders.map((order) => (
+                            {filteredOrders.map((order) => (
                                 <tr key={order.id}>
                                     <td className="mono">{order.id}</td>
                                     <td className="mono">{order.orderNumber}</td>

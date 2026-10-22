@@ -6,9 +6,9 @@ function App() {
 
   return (
     <Routes>
-      <Route path="/" element={<Navigate to="/slowOrder" replace />} />
-      <Route path="/slowOrder" element={<SlowOrderTable />} />
+      <Route path="/" element={<Navigate to="/virtualized" replace />} />
       <Route path="/virtualized" element={<VirtualizationOrderTable />} />
+      <Route path="/slowOrder" element={<SlowOrderTable />} />
     </Routes>
   )
 }
